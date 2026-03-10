@@ -2,20 +2,6 @@ import streamlit as st
 import pandas as pd
 from datetime import date
 
-# Example data
-chart_data = pd.DataFrame({
-    "Title": ["Kaya-chan wa Kowakunai", "The Greatest Estate Developer", "Tamen De Gushi"],
-    "Rating": [8, 10, 9]
-})
-
-# Altair bar chart
-chart = alt.Chart(chart_data).mark_bar(color="#82CAFF").encode(
-    x=alt.X("Title", sort=None),  # Keep order as in DataFrame
-    y="Rating"
-).properties(width=600, height=400)
-
-st.altair_chart(chart, use_container_width=True)
-###
 st.set_page_config(page_title="OtakuShelf", layout="wide")
 
 if "library" not in st.session_state:
