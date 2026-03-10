@@ -4,9 +4,11 @@ from datetime import date
 
 st.set_page_config(page_title="OtakuShelf", layout="wide")
 
+if "library" not in st.session_state:
+    st.session_state.library = pd.DataFrame(columns=["Title", "Type", "Genre", "Status", "Chapter", "Rating", "Start Date", "Review"])
 # sidebar
 st.sidebar.title("OtakuShelf")
-page = st.sidebar.radio("Menu", ["Home", "Add Entry", "My LIbrary", "Statistics", "About"])
+page = st.sidebar.radio("Menu", ["Home", "Add Entry", "My Library", "Statistics", "About"])
 
 # home
 if page == "Home":
@@ -19,8 +21,8 @@ if page == "Home":
 
 # add entry
 elif page == "Add Entry":
-
     st.header("Add a Series")
+
     title = st.text_input("Title")
     genre = st.multiselect("Genre", ["Action", "Romance", "Fantasy", "Comedy", "Drama", "Horror", "Slice of Life", "Adventure"])
     series_type = st.selectbox("Series Type", ["Manga", "Manhwa", "Manhua"])
@@ -31,36 +33,54 @@ elif page == "Add Entry":
     review = st.text_area("Personal Notes / Review")
 
     if st.button("Add to Library"):
-        st.success("Entry added to libarry!")
+        if not title:
+            st.error("Please enter a title!")
+        else:
+            new_entry = {
+                "Title": title,
+                "Type": series_type,
+                "Genre": ", ".join(genre),
+                "Status": status,
+                "Chapter": chapter,
+                "Rating": rating,
+                "Start Date": start_date,
+                "Review": review
+            }
+            st.session_state.library = pd.concat([st.session_state.library, pd.DataFrame([new_entry])], ignore_index=True)
+            st.success(f"Added **{title}** to your libarry!")
 
 # library
 elif page == "My Library":
 
     st.header("My Reading Library")
-    sample_data = pd.DataFrame({
-        "Title": ["Kaya-chan wa Kowakunai", "The Greatest Estate Developer", "Tamen De Gushi"],
-        "Type": ["Manga", "Manhwa", "Manhua"],
-        "Status": ["Reading", "Completed", "Reading"],
-        "Rating": [9, 10, 9]
-    })
-    st.dataframe(sample_data)
+    if st.session_state.library.empty:
+        st.info("Your library is empty. Add some series first!")
+    else:
+        st.dataframe(st.session_state.library)
 
-    with st.expander("View Library Tips"):
-        st.write("Track chapters to stay updated with releases.")
+    with st.expander("Library Tips"):
+        st.write("Track chapters to stay updated with releases and rate series after finishing.")
 
 # statistics
 elif page == "Statistics":
-
     st.header("Reading Statistics")
-    st.metric("Total Series", 12)
-    st.metric("Completed", 5)
-    st.metric("Currently Reading", 4)
-    st.progress(60)
-    chart_data = pd.DataFrame({
-        "Series": ["Kaya-chan", "Estate Developer", "Tamen De Gushi"],
-        "Rating": [9, 10, 9]
-    })
-    st.bar_chart(chart_data.set_index("Series"))
+
+    total_series = len(st.session_state.library)
+    completed = len(st.session_state.library[st.session_state.library["Status"] == "Completed"])
+    reading_now = len(st.session_state.library[st.session_state.library["Status"] == "Reading"])
+
+    st.metric("Total Series", total_series)
+    st.metric("Completed", completed)
+    st.metric("Currently Reading", reading_now)
+
+    # progress bar based on completed total
+    progress = int((completed / total_series) * 100) if total_series > 0 else 0
+    st.progress(progress)
+
+    #rating chart
+    if not st.session_state.library.empty:
+        chart_data = st.session_state.library[["Title", "Rating"]].set_index("Title")
+        st.bar_chart(chart_data)
     
 # about
 elif page == "About":
