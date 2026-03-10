@@ -104,6 +104,11 @@ elif page == "About":
     - Reviews
              
     **Outputs Displayed:**
-    - Library table
-    - Reading statistics
+    - Library table of added series
+    - Series details: title, type, genre, status, chapter, rating, start date, review
+    - Reading statistics: total series, completed, currently reading
+    - Progress bar for completed series
+    - Rating bar chart
+    - Success/error messages when adding entries
+    - Tips and informational text
 """)
