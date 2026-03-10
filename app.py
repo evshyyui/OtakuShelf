@@ -65,6 +65,20 @@ elif page == "My Library":
 elif page == "Statistics":
     st.header("Reading Statistics")
 
+    # Example data
+chart_data = pd.DataFrame({
+    "Title": ["Kaya-chan wa Kowakunai", "The Greatest Estate Developer", "Tamen De Gushi"],
+    "Rating": [8, 10, 9]
+})
+
+# Altair bar chart
+chart = alt.Chart(chart_data).mark_bar(color="#82CAFF").encode(
+    x=alt.X("Title", sort=None),  # Keep order as in DataFrame
+    y="Rating"
+).properties(width=600, height=400)
+
+st.altair_chart(chart, use_container_width=True)
+
     total_series = len(st.session_state.library)
     completed = len(st.session_state.library[st.session_state.library["Status"] == "Completed"])
     reading_now = len(st.session_state.library[st.session_state.library["Status"] == "Reading"])
