@@ -57,8 +57,8 @@ elif page == "Statistics":
     st.metric("Currently Reading", 4)
     st.progress(60)
     chart_data = pd.DataFrame({
-        "Series": ["Kaya-chan", "Estate Developer", "Tamen De Gushi", "Sample"],
-        "Rating": [9, 10, 9, 8]
+        "Series": ["Kaya-chan", "Estate Developer", "Tamen De Gushi"],
+        "Rating": [9, 10, 9]
     })
     st.bar_chart(chart_data.set_index("Series"))
     
