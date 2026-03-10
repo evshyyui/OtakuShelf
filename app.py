@@ -13,7 +13,6 @@ if page == "Home":
 
     st.title("📚 OtakuShelf")
     st.header("Your Manga / Manhwa / Manhua Tracker")
-    st.image("https://upload.wikimedia.org/wikipedia/commons/3/3c/Book_icon_1.png", width=120)
     st.subheader("Welcome!")
     st.write("Track what you're currently reading, rate your favorites, and monitor your reading progress.")
     st.info("Supports Manga, Manhwa, and Manhua tracking.")
