@@ -88,8 +88,10 @@ elif page == "About":
     st.header("About This App")
     st.write("""
     **App Name:** OtakuShelf
+    
     **Use Case:**
     This app allows users to track manga, manhwa, and manhua they are reading.
+    
     **Target Users:**
     Manga readers and webcomic fans who want to manage their reading list.
              
